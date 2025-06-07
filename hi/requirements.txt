@@ -1,0 +1,57 @@
+# langchain>=0.1.0
+# langchain-openai>=0.0.2
+# langchain-core>=0.1.0
+# python-dotenv>=1.0.0
+# openai>=1.0.0
+# pydantic>=2.0.0
+# langchain-groq>=0.0.1
+# langchain-community
+# # Note: re, json, datetime, and collections are standard Python libraries
+# # and don't need to be in requirements.txt
+# # Flask for backend
+# flask
+# flask-cors
+
+# # Streamlit for frontend
+# streamlit
+# requests
+
+# # Optional (for colored CLI output or future enhancements)
+# colorama
+
+
+# # Audio and Video Processing
+# transformers
+# torch
+# sounddevice
+# numpy>=1.24.0
+# #opencv-contrib-python==4.5.5.64
+# sounddevice>=0.4.6
+# whisper>=1.0.0
+# torch>=2.0.0 
+# #fer
+
+# --- Core LangChain + OpenAI ---
+langchain>=0.1.0
+langchain-core>=0.1.0
+langchain-groq>=0.0.1
+langchain-community
+
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# --- Web Framework (Backend) ---
+flask>=2.2
+flask-cors>=3.0
+
+# --- Frontend (Streamlit) ---
+streamlit>=1.24.0
+requests>=2.31.0
+urllib3<2.0  # ✅ Downgraded to avoid LibreSSL issue on macOS
+
+# --- Audio & Speech ---
+sounddevice>=0.4.6
+whisper>=1.0.0
+numpy>=1.24.0
+torch>=2.0.0
+transformers>=4.36.0

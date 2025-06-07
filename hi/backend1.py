@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from tools1 import smart_router
+import os
 
 app = Flask(__name__)
 
-# ✅ Temporarily allow all origins (for development/debugging)
-CORS(app)
+# Configure CORS for production
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -31,4 +32,5 @@ def chat():
         return jsonify({"error": f"Internal server error: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get("PORT", 5001))
+    app.run(host="0.0.0.0", port=port)

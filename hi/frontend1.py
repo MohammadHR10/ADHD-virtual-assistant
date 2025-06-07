@@ -2,8 +2,10 @@ import streamlit as st
 from audio import speech_recognition 
 import requests
 import time
+import os
 
-BACKEND_URL = "http://localhost:5001/chat"
+# Get backend URL from environment variable or use default
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
 
 # Session State
 if 'user_id' not in st.session_state:
