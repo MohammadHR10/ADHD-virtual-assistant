@@ -14,7 +14,7 @@ services:
     name: adhd-assistant-frontend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: cd hi && streamlit run frontend1.py --server.port $PORT
+    startCommand: cd hi && streamlit run frontend1.py --server.port $PORT --server.address 0.0.0.0
     envVars:
       - key: GROQ_API_KEY
         sync: false
@@ -25,3 +25,7 @@ services:
           property: url
       - key: PORT
         value: 10001
+      - key: STREAMLIT_SERVER_PORT
+        value: 10001
+      - key: STREAMLIT_SERVER_ADDRESS
+        value: 0.0.0.0
