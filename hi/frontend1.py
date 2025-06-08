@@ -63,6 +63,7 @@ if user_message:
     except Exception as e:
         st.error(f"🚨 Request failed: {e}")
 
+# Display chat history
 st.header("🗂️ Chat History")
 for sender, msg in st.session_state.chat_history[::-1]:
     st.markdown(f"*{sender}:* {msg}")
