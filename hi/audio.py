@@ -1,7 +1,14 @@
 import torch
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
-import sounddevice as sd
-import numpy as np
+import os
+
+# Try to import audio-related packages, but don't fail if not available
+try:
+    import sounddevice as sd
+    import speech_recognition as sr
+    AUDIO_AVAILABLE = True
+except (ImportError, OSError):
+    AUDIO_AVAILABLE = False
 
 class SpeechRecognition:
     def __init__(self):
@@ -12,6 +19,9 @@ class SpeechRecognition:
         self.duration = 10  # seconds
 
     def record_and_transcribe(self):
+        if not AUDIO_AVAILABLE:
+            raise ImportError("Audio features are not available in this environment. Please use text input instead.")
+        
         print("Recording...")
         # Record audio
         recording = sd.rec(int(self.duration * self.sample_rate), 
@@ -45,5 +55,23 @@ class SpeechRecognition:
     
 # Export instance so frontend can import it
 speech_recognition = SpeechRecognition()
+
+def record_and_transcribe():
+    if not AUDIO_AVAILABLE:
+        raise ImportError("Audio features are not available in this environment. Please use text input instead.")
+    
+    recognizer = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("🎤 Listening...")
+        audio = recognizer.listen(source)
+        print("✅ Processing speech...")
+        
+    try:
+        text = recognizer.recognize_google(audio)
+        return text
+    except sr.UnknownValueError:
+        return "Sorry, I couldn't understand that."
+    except sr.RequestError:
+        return "Sorry, there was an error with the speech recognition service."
 
 

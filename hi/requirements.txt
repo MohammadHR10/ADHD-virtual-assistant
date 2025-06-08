@@ -36,7 +36,6 @@ langchain>=0.1.0
 langchain-core>=0.1.0
 langchain-groq>=0.0.1
 langchain-community
-
 python-dotenv>=1.0.0
 pydantic>=2.0.0
 
@@ -49,16 +48,11 @@ streamlit==1.24.0
 requests==2.31.0
 urllib3<2.0  # ✅ Downgraded to avoid LibreSSL issue on macOS
 
-# --- Audio & Speech ---
-sounddevice>=0.4.6
-whisper>=1.0.0
-numpy>=1.24.0
-torch>=2.0.0
-transformers>=4.36.0
-
-# Optional audio packages - comment out if not needed
-# SpeechRecognition==3.10.0
-# pyaudio==0.2.13
-# sounddevice==0.4.6
-
+# --- Server ---
 gunicorn==20.1.0
+
+# Note: Audio features are disabled in web deployment
+# If you need audio features locally, uncomment these:
+# SpeechRecognition==3.10.0
+# sounddevice==0.4.6
+# pyaudio==0.2.13

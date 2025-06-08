@@ -5,11 +5,11 @@ import os
 
 # Try to import audio features, but don't fail if not available
 try:
-    from audio import speech_recognition
+    from audio import record_and_transcribe
     AUDIO_AVAILABLE = True
-except ImportError:
+except (ImportError, OSError):
     AUDIO_AVAILABLE = False
-    st.warning("Audio features are not available in this environment.")
+    st.warning("🎙️ Audio features are not available in this environment. Please use text input instead.")
 
 # Get backend URL from environment variable or use default
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
@@ -23,7 +23,12 @@ if 'chat_history' not in st.session_state:
 st.title("🧠 ADHD Routine Assistant")
 st.markdown("Choose how you want to interact:")
 
-mode = st.radio("Input Mode", ["Type", "Speak"] if AUDIO_AVAILABLE else ["Type"], horizontal=True)
+# Only show audio option if available
+input_options = ["Type"]
+if AUDIO_AVAILABLE:
+    input_options.append("Speak")
+
+mode = st.radio("Input Mode", input_options, horizontal=True)
 
 user_message = ""
 if mode == "Type":
@@ -31,7 +36,7 @@ if mode == "Type":
 elif mode == "Speak" and AUDIO_AVAILABLE:
     if st.button("🎤 Record Now"):
         try:
-            user_message = speech_recognition.record_and_transcribe()
+            user_message = record_and_transcribe()
             st.success(f"You said: {user_message}")
         except Exception as e:
             st.error(f"🎙️ Speech error: {e}")
@@ -43,14 +48,9 @@ if user_message:
         "message": user_message
     }
 
-    print("📤 Sending payload:", payload)
-
     try:
         response = requests.post(BACKEND_URL, json=payload)
         
-        print("📥 Response status:", response.status_code)
-        print("📥 Response body:", response.text)
-
         if response.status_code == 200:
             reply = response.json().get("response", "No response")
             st.session_state.chat_history.append(("You", user_message))
