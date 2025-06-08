@@ -19,10 +19,7 @@ services:
       - key: GROQ_API_KEY
         sync: false
       - key: BACKEND_URL
-        fromService:
-          type: web
-          name: adhd-assistant-backend
-          property: url
+        value: https://adhd-assistant-backend.onrender.com/chat
       - key: PORT
         value: 10001
       - key: STREAMLIT_SERVER_PORT
