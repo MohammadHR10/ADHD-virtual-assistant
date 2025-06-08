@@ -11,8 +11,9 @@ except (ImportError, OSError):
     AUDIO_AVAILABLE = False
     st.warning("🎙️ Audio features are not available in this environment. Please use text input instead.")
 
-# Get backend URL from environment variable or use default
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
+BACKEND_BASE = os.getenv("BACKEND_URL", "http://localhost:5001")
+BACKEND_URL = f"{BACKEND_BASE}/chat"
+
 
 # Session State
 if 'user_id' not in st.session_state:
