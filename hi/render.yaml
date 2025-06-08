@@ -19,7 +19,7 @@ services:
       - key: GROQ_API_KEY
         sync: false
       - key: BACKEND_URL
-        value: https://adhd-assistant-backend.onrender.com/chat
+        value: https://adhd-assistant-backend.onrender.com
       - key: PORT
         value: 10001
       - key: STREAMLIT_SERVER_PORT

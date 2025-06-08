@@ -50,6 +50,7 @@ if user_message:
     }
 
     try:
+        st.text(f"DEBUG: Sending to {BACKEND_URL}")
         response = requests.post(BACKEND_URL, json=payload)
         
         if response.status_code == 200:
