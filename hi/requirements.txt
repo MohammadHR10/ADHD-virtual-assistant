@@ -31,7 +31,7 @@
 # torch>=2.0.0 
 # #fer
 
-# --- Core LangChain + OpenAI ---
+# --- Core Dependencies ---
 langchain>=0.1.0
 langchain-core>=0.1.0
 langchain-groq>=0.0.1
@@ -41,18 +41,28 @@ pydantic>=2.0.0
 
 # --- Web Framework (Backend) ---
 flask==2.0.1
+werkzeug==2.0.3  # ✅ Fixed version for Flask compatibility
 flask-cors==3.0.10
+gunicorn==20.1.0
 
 # --- Frontend (Streamlit) ---
 streamlit==1.24.0
 requests==2.31.0
 urllib3<2.0  # ✅ Downgraded to avoid LibreSSL issue on macOS
 
-# --- Server ---
-gunicorn==20.1.0
+# --- Audio & Speech Processing ---
+SpeechRecognition==3.10.0
+sounddevice==0.4.6
+pyaudio==0.2.13
+numpy>=1.24.0
 
-# Note: Audio features are disabled in web deployment
-# If you need audio features locally, uncomment these:
-# SpeechRecognition==3.10.0
-# sounddevice==0.4.6
-# pyaudio==0.2.13
+# --- Image Processing ---
+Pillow>=10.2.0,<10.3.0  # ✅ Fixed version for facenet-pytorch compatibility
+
+# --- Machine Learning & AI ---
+torch>=2.0.0
+transformers>=4.36.0
+whisper>=1.0.0
+
+# --- Utilities ---
+colorama>=0.4.6
