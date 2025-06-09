@@ -2,18 +2,13 @@ import streamlit as st
 import requests
 import time
 import os
+import speech_recognition as sr
 
-# Try to import audio features, but don't fail if not available
-try:
-    from audio import record_and_transcribe
-    AUDIO_AVAILABLE = True
-except (ImportError, OSError):
-    AUDIO_AVAILABLE = False
-    st.warning("🎙️ Audio features are not available in this environment. Please use text input instead.")
+# Initialize speech recognition
+recognizer = sr.Recognizer()
 
-BACKEND_BASE = os.getenv("BACKEND_URL", "http://localhost:5001")
-BACKEND_URL = f"{BACKEND_BASE}/chat"
-
+# Get backend URL from environment variable or use default
+BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
 
 # Session State
 if 'user_id' not in st.session_state:
@@ -22,25 +17,36 @@ if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
 
 st.title("🧠 ADHD Routine Assistant")
-st.markdown("Choose how you want to interact:")
+st.markdown("### 💬 Chat with your ADHD Assistant")
 
-# Only show audio option if available
-input_options = ["Type"]
-if AUDIO_AVAILABLE:
-    input_options.append("Speak")
-
-mode = st.radio("Input Mode", input_options, horizontal=True)
+# Input mode selection
+mode = st.radio("Input Mode", ["Type", "Speak"], horizontal=True)
 
 user_message = ""
 if mode == "Type":
     user_message = st.text_input("📝 Enter your message:")
-elif mode == "Speak" and AUDIO_AVAILABLE:
+elif mode == "Speak":
     if st.button("🎤 Record Now"):
         try:
-            user_message = record_and_transcribe()
+            with sr.Microphone() as source:
+                st.info("🎤 Listening... (Speak now)")
+                # Adjust for ambient noise
+                recognizer.adjust_for_ambient_noise(source, duration=1)
+                # Record audio
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
+                st.info("✅ Processing speech...")
+                
+            # Use Google's speech recognition
+            user_message = recognizer.recognize_google(audio)
             st.success(f"You said: {user_message}")
+        except sr.WaitTimeoutError:
+            st.error("No speech detected. Please try again.")
+        except sr.UnknownValueError:
+            st.error("Sorry, I couldn't understand that. Please try again.")
+        except sr.RequestError as e:
+            st.error(f"Sorry, there was an error with the speech recognition service: {str(e)}")
         except Exception as e:
-            st.error(f"🎙️ Speech error: {e}")
+            st.error(f"An error occurred: {str(e)}")
 
 if user_message:
     st.spinner("🤖 Thinking...")
@@ -50,7 +56,6 @@ if user_message:
     }
 
     try:
-        st.text(f"DEBUG: Sending to {BACKEND_URL}")
         response = requests.post(BACKEND_URL, json=payload)
         
         if response.status_code == 200:
