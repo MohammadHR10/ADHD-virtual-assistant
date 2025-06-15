@@ -32,37 +32,34 @@
 # #fer
 
 # --- Core Dependencies ---
-langchain>=0.1.0
-langchain-core>=0.1.0
-langchain-groq>=0.0.1
-langchain-community
-python-dotenv>=1.0.0
-pydantic>=2.0.0
+langchain==0.1.0
+python-dotenv==1.0.0
+pydantic==2.5.2
 
 # --- Web Framework (Backend) ---
-flask==2.0.1
-werkzeug==2.0.3  # ✅ Fixed version for Flask compatibility
-flask-cors==3.0.10
-gunicorn==20.1.0
+flask==3.0.0
+werkzeug==3.0.1
+flask-cors==4.0.0
+gunicorn==21.2.0
 
 # --- Frontend (Streamlit) ---
 streamlit==1.24.0
 requests==2.31.0
-urllib3<2.0  # ✅ Downgraded to avoid LibreSSL issue on macOS
+urllib3==2.1.0
 
 # --- Audio & Speech Processing ---
 SpeechRecognition==3.10.0
 sounddevice==0.4.6
 pyaudio==0.2.13
-numpy>=1.24.0
+numpy==1.24.3
 
 # --- Image Processing ---
-Pillow>=10.2.0,<10.3.0  # ✅ Fixed version for facenet-pytorch compatibility
+Pillow>=6.2.0,<10.0.0  # Compatible with Streamlit 1.24.0
 
 # --- Machine Learning & AI ---
-torch>=2.0.0
-transformers>=4.36.0
-whisper>=1.0.0
+torch==2.1.0
+transformers==4.35.0
+whisper==1.1.10
 
 # --- Utilities ---
-colorama>=0.4.6
+colorama==0.4.6
