@@ -3,20 +3,32 @@ services:
     name: adhd-assistant-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python backend1.py
+    startCommand: cd hi && python backend1.py
     envVars:
       - key: GROQ_API_KEY
         sync: false
       - key: RENDER
         value: "true"
+      - key: PORT
+        value: 10000
 
   - type: web
     name: adhd-assistant-frontend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run frontend1.py
+    startCommand: cd hi && streamlit run frontend1.py --server.port $PORT --server.address 0.0.0.0
     envVars:
       - key: BACKEND_URL
-        value: https://adhd-assistant-backend.onrender.com/chat
+        fromService:
+          type: web
+          name: adhd-assistant-backend
+          property: url
+        format: ${url}/chat
       - key: RENDER
         value: "true"
+      - key: PORT
+        value: 10001
+      - key: STREAMLIT_SERVER_PORT
+        value: 10001
+      - key: STREAMLIT_SERVER_ADDRESS
+        value: 0.0.0.0
