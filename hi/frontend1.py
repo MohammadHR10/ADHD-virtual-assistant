@@ -3,12 +3,16 @@ import requests
 import time
 import os
 import speech_recognition as sr
+import platform
 
 # Initialize speech recognition
 recognizer = sr.Recognizer()
 
 # Get backend URL from environment variable or use default
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
+
+# Check if running in cloud environment
+IS_CLOUD = os.getenv("RENDER", "false").lower() == "true"
 
 # Session State
 if 'user_id' not in st.session_state:
@@ -19,8 +23,12 @@ if 'chat_history' not in st.session_state:
 st.title("🧠 ADHD Routine Assistant")
 st.markdown("### 💬 Chat with your ADHD Assistant")
 
-# Input mode selection
-mode = st.radio("Input Mode", ["Type", "Speak"], horizontal=True)
+# Input mode selection - only show audio option if not in cloud
+if IS_CLOUD:
+    mode = "Type"
+    st.info("ℹ️ Audio features are only available in the local version")
+else:
+    mode = st.radio("Input Mode", ["Type", "Speak"], horizontal=True)
 
 user_message = ""
 if mode == "Type":
@@ -72,3 +80,16 @@ if user_message:
 st.header("🗂️ Chat History")
 for sender, msg in st.session_state.chat_history[::-1]:
     st.markdown(f"*{sender}:* {msg}")
+
+# Show environment info in sidebar
+st.sidebar.markdown("### ℹ️ Environment Info")
+st.sidebar.markdown(f"**Mode:** {'Cloud' if IS_CLOUD else 'Local'}")
+st.sidebar.markdown(f"**Backend URL:** {BACKEND_URL}")
+
+if not IS_CLOUD:
+    st.sidebar.markdown("""
+    ### 🎙️ Audio Features Available
+    - Voice input
+    - Speech recognition
+    - Real-time audio processing
+    """)
