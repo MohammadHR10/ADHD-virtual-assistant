@@ -3,26 +3,20 @@ services:
     name: adhd-assistant-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: cd hi && python backend1.py
+    startCommand: python backend1.py
     envVars:
       - key: GROQ_API_KEY
         sync: false
-      - key: PORT
-        value: 10000
+      - key: RENDER
+        value: "true"
 
   - type: web
-    name: adhd-virtual-assistant-frontend
+    name: adhd-assistant-frontend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: cd hi && streamlit run frontend1.py --server.port $PORT --server.address 0.0.0.0
+    startCommand: streamlit run frontend1.py
     envVars:
-      - key: GROQ_API_KEY
-        sync: false
       - key: BACKEND_URL
-        value: https://adhd-assistant-backend.onrender.com
-      - key: PORT
-        value: 10001
-      - key: STREAMLIT_SERVER_PORT
-        value: 10001
-      - key: STREAMLIT_SERVER_ADDRESS
-        value: 0.0.0.0
+        value: https://adhd-assistant-backend.onrender.com/chat
+      - key: RENDER
+        value: "true"
