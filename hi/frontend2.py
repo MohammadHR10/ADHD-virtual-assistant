@@ -10,7 +10,14 @@ from datetime import datetime
 recognizer = sr.Recognizer()
 
 # Get backend URL from environment variable or use default
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:5001/chat")
+# BACKEND_URL should be set to the backend service name when running in Docker Compose.
+# For local development, use http://localhost:5001/chat
+# For Docker Compose, use http://backend:5001/chat (where 'backend' is the service name in docker-compose.yml)
+# You can override this with the BACKEND_URL environment variable:
+#   - In Docker Compose: add 'environment: - BACKEND_URL=...' to the frontend service
+#   - With docker run: use '-e BACKEND_URL=...'
+#   - Locally: set BACKEND_URL before running streamlit
+BACKEND_URL = os.getenv("BACKEND_URL", "http://backend:5001/chat")
 
 # Check if running in cloud environment
 IS_CLOUD = os.getenv("RENDER", "false").lower() == "true"

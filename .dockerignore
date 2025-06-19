@@ -1,0 +1,54 @@
+# Version control
+.git
+.gitignore
+.github
+
+# Environment files
+.env
+**/.env
+.venv
+venv
+env
+.python-version
+**/__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.coverage
+htmlcov/
+
+# Editor settings
+.vscode
+.idea
+.DS_Store
+**/.DS_Store
+
+# Build artifacts
+*.log
+*.pot
+*.pyc
+dist/
+build/
+*.egg-info/
+
+# Docker related
+Dockerfile*
+.dockerignore
+docker-compose*.yml
+
+# Documentation
+README.md
+LICENSE
+docs/
+*.md
+
+# Development/testing specific
+tests/
+test*.py
+*.ipynb
+.ipynb_checkpoints
+
+# Specific to this project (exclude files not needed in containers)
+**/__pycache__/
+hi/__pycache__/

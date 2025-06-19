@@ -38,7 +38,7 @@ langchain-groq>=0.0.1
 langchain-community
 
 python-dotenv>=1.0.0
-pydantic>=2.0.0
+# pydantic>=2.0.0
 
 # --- Web Framework (Backend) ---
 flask>=2.2
@@ -50,8 +50,9 @@ requests>=2.31.0
 urllib3<2.0  # ✅ Downgraded to avoid LibreSSL issue on macOS
 
 # --- Audio & Speech ---
-sounddevice>=0.4.6
-whisper>=1.0.0
+# sounddevice>=0.4.6
+# whisper>=1.0.0
 numpy>=1.24.0
-torch>=2.0.0
-transformers>=4.36.0
+speechrecognition==3.10.0
+# torch>=2.0.0
+# transformers>=4.36.0

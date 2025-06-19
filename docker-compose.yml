@@ -1,0 +1,49 @@
+#
+# HOW DOCKER COMPOSE HANDLES NETWORKING
+#
+# Docker Compose automatically creates a dedicated network for this project.
+# All services are connected to this network and can communicate using their service names as hostnames.
+#
+# Example: The frontend can reach the backend at http://backend:5001/chat
+#
+# To override the backend URL for the frontend, add this to the frontend service:
+#   environment:
+#     - BACKEND_URL=http://your-backend-host:5001/chat
+#
+# To start all services and the network, simply run:
+#   docker compose up -d
+#
+# No need to manually create a network or assign container names.
+#
+# For custom setups (docker run), see RUNNING.md or project README.
+#
+version: "3.8"
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - GROQ_API_KEY # Pass this at runtime: docker compose up -d backend -e GROQ_API_KEY=sk-your-real-key
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "8501:10000"
+    environment:
+      - BACKEND_URL=http://backend:5001/chat
+    depends_on:
+      - backend
+    command:
+      [
+        "streamlit",
+        "run",
+        "frontend2.py",
+        "--server.port=10000",
+        "--server.address=0.0.0.0",
+      ]
